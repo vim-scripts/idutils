@@ -1,9 +1,9 @@
 " idutils.vim -- Interface with id-utils.
 " Author: Hari Krishna <hari_vim at yahoo.com>
-" Last Change: 22-Aug-2002 @ 18:10
+" Last Change: 28-Aug-2002 @ 12:57
 " Created:     not sure, but sometime before 08-Mar-2001
 " Requires: Vim-6.0 or higher.
-" Version: 1.1.0
+" Version: 1.3.0
 " Download From:
 "     http://vim.sourceforge.net/scripts/script.php?script_id=113
 "
@@ -20,10 +20,10 @@
 " Help:
 "	IDGrep    <keyword>
 "	IDGrep    [<lid argument> ...] <lid keyword pattern> 
-"	IDGrep    <lid arguments> -f <filter arguments>
+"	IDGrep    <lid arguments> +f <filter arguments>
 "	IDGrepAdd <keyword>
 "	IDGrepAdd [<lid argument> ...] <lid keyword pattern> 
-"	IDGrepAdd <lid arguments> -f <filter arguments>
+"	IDGrepAdd <lid arguments> +f <filter arguments>
 "
 "   You can use all the regular quickfix commands to traverse from one hit to
 "     another.
@@ -42,22 +42,26 @@
 "     use a single filter to get all the matches then this command helps you to
 "     still work with a single list instead of generating multiple lists.
 "
+"   Use the g:IGlidcmd, g:IGfiltercmd, g:IGautoCopen global variables to set
+"     the path to 'lid' command, filter command name/path (defaults to 'grep')
+"     and if the error list window should automatically be opened.
+"
 " Examples: 
 "   - Filter the lines that don't contain src.
-"	IDGrep main -f src
+"	IDGrep main +f src
 "
 "   - Filter the lines that contain src.
-"	IDGrep main -f -v src
+"	IDGrep main +f -v src
 "
 "   - To search for the current word in all the files and filter the results
 "     not containing \.java in the grepped output. This will potentially
 "     return all the occurences in the java files only. 
-"	IDGrep <cword> -f \.java 
+"	IDGrep <cword> +f \.java 
 "
 "   - If any argument contains spaces, then you need to protect them by
 "     prefixing them with a backslash.  The following will filter those lines
 "     that don't contain "ABC XYZ".
-"	IDGrep <cword> -f ABC\ XYZ 
+"	IDGrep <cword> +f ABC\ XYZ 
 
 if exists("loaded_idutils")
   finish
@@ -117,7 +121,7 @@ function! s:IDGrep(grepAdd, ...)
   let arg = 0
   while arg < a:0
     let arg = arg + 1
-    if argIsForLid && a:{arg} == '-f'
+    if argIsForLid && a:{arg} == '+f'
       let argIsForLid = 0
       continue
     endif
@@ -127,8 +131,6 @@ function! s:IDGrep(grepAdd, ...)
       let filterArgs = filterArgs . ' ' . escape(a:{arg}, ' ')
     endif
   endwhile
-  echomsg "lidArgs: " . lidArgs
-  echomsg "filterArgs: " . filterArgs
 
   "  We need to check for non-null string because Vim passes a null string if
   "    this is called from a command.
