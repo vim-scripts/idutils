@@ -1,0 +1,59 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=113
+
+This script has been superceded by vimscript #1062 with many enhancements.
+
+This script provides a simple interface with GNU id-utils.
+
+Summary Of Features:
+  Command Line:
+      IGInitialize, IDGrep, IDGrepAdd
+                                                                              
+  Settings:
+      g:IGlidcmd, g:IGfiltercmd, g:IGautoCopen
+                                                                              
+Help:
+      IDGrep    <keyword>
+      IDGrep    [<lid argument> ...] <lid keyword pattern> 
+      IDGrep    <lid options> [+f <filter arguments> ...]
+      IDGrepAdd <keyword>
+      IDGrepAdd [<lid options> ...] <lid keyword pattern> 
+      IDGrepAdd <lid arguments> [+f <filter arguments> ...]
+                                                                              
+  You can use all the regular quickfix commands to traverse from one hit to
+    another.
+                                                                              
+      :h quickfix 
+                                                                              
+  Each time you run IDGrepAdd, the new list of matches are added to the
+    existing list. This works the same as 'grepadd' command. If you can't
+    use a single filter to get all the matches then this command helps you to
+    still work with a single list instead of generating multiple lists.
+                                                                              
+  Use the g:IGlidcmd, g:IGfiltercmd, g:IGautoCopen global variables to set
+    the path to 'lid' command, filter command name/path (defaults to 'grep')
+    and if the error list window should automatically be opened (runs
+    |:cwindow| at the end).
+                                                                              
+  You can pass as many filters as you want, each prefixed with +f option.
+    The filter arguments are escaped such a way that the arguments are
+    passed through the shell, unmodified to the filter.
+                                                                              
+Examples: 
+  - Filter the lines that don't contain src.
+      IDGrep main +f src
+                                                                              
+  - Filter the lines that contain src.
+      IDGrep main +f -v src
+                                                                              
+  - To search for the current word in all the files and filter the results
+    not containing \.java in the grepped output. This will potentially
+    return all the occurences in the java files only. 
+      IDGrep <cword> +f \.java 
+                                                                              
+  - If any argument contains spaces, then you need to protect them by
+    prefixing them with a backslash.  The following will filter those lines
+    that don't contain "ABC XYZ".
+      IDGrep <cword> +f ABC\ XYZ 
+
+
+Search_key_words: idutils id-utils gnu id grep gid mkid lid Hari Krishna Dara
